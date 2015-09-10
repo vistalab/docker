@@ -7,7 +7,7 @@
 # 5. Configure ENV
 # 6. Configure bashrc to source FreeSurferEnv.sh
 #
-# Note: The resulting container is ~8GB. The centos6 image is (<200mb)
+# Note: The resulting container is ~8GB. 
 # 
 
 FROM ubuntu:trusty
