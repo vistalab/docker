@@ -1,11 +1,11 @@
 ## vistalab/freesurfer
 
-This dockerfile will create a docker image with a functioning (headless) version of Freesurfer. 
+This dockerfile will create a docker image with a functioning (headless) version of Freesurfer (v5.3.0). 
 
-NOTE: 
 * You MUST read and agree to the license agreement and [register with MGH before you use the software](https://surfer.nmr.mgh.harvard.edu/registration.html). 
 * Once you get your license please edit the license file to reflect your license. 
 * You can also change ```build.sh``` to edit the tag for the image (default=vistalab/freesurfer).
+* The resulting image is ~8GB
 
 ### Build the Image
 To build the image, either download the files from this repo or clone the repo:
