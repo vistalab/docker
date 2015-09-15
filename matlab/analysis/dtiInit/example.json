@@ -1,0 +1,31 @@
+{ 
+    "input_dir": "/input",
+    "output_dir": "/output",
+    "dwi_file": "/input/dwi.nii.gz",
+    "bvec_file": "/input/dwi.bvec",
+    "bval_file": "/input/dwi.bval",
+    "t1_file": "/input/t1.nii.gz",
+    "params":  
+        {
+            "bvalue": "",
+            "gradDirsCode": "",
+            "clobber": 0,
+            "dt6BaseName": "",
+            "flipLrApFlag": 0,
+            "numBootStrapSamples": 500,
+            "fitMethod": "ls",
+            "nStep": 50,
+            "eddyCorrect": 0,
+            "excludeVols": "",
+            "bsplineInterpFlag": 0,
+            "phaseEncodeDir": "",
+            "dwOutMm": [2, 2, 2],
+            "rotateBvecsWithRx": 0,
+            "rotateBvecsWithCanXform": 0,
+            "bvecsFile": "",
+            "bvalsFile": "",
+            "noiseCalcMethod": "b0",
+            "outDir": "/output/"
+        }
+}
+
