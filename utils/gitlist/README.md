@@ -20,7 +20,7 @@ Start the container
       -p 80:80 \
       -v <repos/on/disk>:/repos \
       vistalab/gitlist
-``
+```
 Stop the container
 ```
   docker stop gitlist
