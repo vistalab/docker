@@ -30,10 +30,11 @@ RUN apt-get update \
     && chmod -R 777 /var/www/gitlist/cache \
     && echo "ServerName localhost" >> /etc/apache2/apache2.conf
 
-# Copy files
+# Copy custom files and configs
 COPY config.ini /var/www/gitlist/config.ini
-COPY apache.conf /etc/apache2/sites-enabled/000-default.conf
 COPY gitlist.conf /etc/apache2/conf-available/gitlist.conf
+COPY apache.conf /etc/apache2/sites-enabled/000-default.conf
+COPY custom_navigation.twig /var/www/gitlist/themes/default/twig/navigation.twig
 
 # Enable config
 RUN a2enconf gitlist \
