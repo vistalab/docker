@@ -35,6 +35,7 @@ COPY config.ini /var/www/gitlist/config.ini
 COPY gitlist.conf /etc/apache2/conf-available/gitlist.conf
 COPY apache.conf /etc/apache2/sites-enabled/000-default.conf
 COPY custom_navigation.twig /var/www/gitlist/themes/default/twig/navigation.twig
+COPY custom_footer.twig /var/www/gitlist/themes/default/twig/footer.twig
 
 # Enable config
 RUN a2enconf gitlist \
