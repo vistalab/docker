@@ -1,20 +1,20 @@
 # Download and install Matlab Compiler Runtime v8.4 (2014b)
-# 
+#
 # This docker file will configure an environment into which the Matlab compiler
-# runtime will be installed and in which stand-alone matlab routines (such as 
+# runtime will be installed and in which stand-alone matlab routines (such as
 # those created with Matlab's deploytool) can be executed.
 #
 # See http://www.mathworks.com/products/compiler/mcr/ for more info.
 
 FROM ubuntu-debootstrap:trusty
 
-# Install the MCR dependencies and some things we'll need and download the MCR 
+# Install the MCR dependencies and some things we'll need and download the MCR
 # from Mathworks -silently install it
 RUN apt-get -qq update && apt-get -qq install -y \
     unzip \
     xorg \
     wget \
-    curl \
+    curl && \
     mkdir /mcr-install && \
     mkdir /opt/mcr && \
     cd /mcr-install && \
