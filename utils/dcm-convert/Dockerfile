@@ -6,7 +6,7 @@
 # Example usage:
 #   docker run --rm -ti \
 #        -v /path/to/dicom/data:/data \
-#        vistalab/dcm_convert \
+#        vistalab/dcm-convert \
 #        /data/input.tgz \
 #        /data/outprefix
 #
