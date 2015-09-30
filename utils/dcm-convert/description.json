@@ -1,0 +1,66 @@
+{
+    "inputs": [
+        {
+            "type": "dicom",
+            "state": [
+                "orig"
+            ],
+            "kinds": null
+        }
+    ],
+    "app_type": "docker",
+    "default": true,
+    "outputs": [
+        {
+            "type": "nifti",
+            "state": [
+                "derived"
+            ],
+            "kinds": "__INHERIT__",
+            "fext": ".nii.gz"
+        },
+        {
+            "type": "text",
+            "state": [
+                "derived"
+            ],
+            "kinds": [
+                "bvec"
+            ],
+            "fext": ".bvec"
+        },
+        {
+            "type": "text",
+            "state": [
+                "derived"
+            ],
+            "kinds": [
+                "bval"
+            ],
+            "fext": ".bval"
+        },
+        {
+            "type": "zip",
+            "state": [
+                "derived"
+            ],
+            "kinds": [
+                "montage"
+            ],
+            "fext": ".zip"
+        },
+        {
+            "type": "png",
+            "state": [
+                "derived"
+            ],
+            "kinds": [
+                "png"
+            ],
+            "fext": ".png"
+        }
+    ],
+    "asset_url": "/apps/dcmconvert/0",
+    "entrypoint": "/scripts/run",
+    "_id": "dcmconvert:0"
+}
