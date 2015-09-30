@@ -1,17 +1,17 @@
-## vistalab/dcm_convert
+## vistalab/dcm-convert
 Converts raw MR DICOM data, from Siemens or GE, to NIfTI. 
 
 This container consists of the python package, `scitran.data`. The `run` entrypoint is configured to accept a semi-standard input filetype, a `tgz`, that contains raw data and a `json` file that indicates the raw data filetype, header data, and metadata corrections and an output base directory where results will be saved.
 
 ### Usage
-`vistalab/dcm_convert` accepts three inputs: `<path_to_dicom_tgz>` `<outfile_name_prefix>` `<log_level[=info]>`
+`vistalab/dcm-convert` accepts three inputs: `<path_to_dicom_tgz>` `<outfile_name_prefix>` `<log_level[=info]>`
 
 The following will take the raw, tarred and zipped, DICOM input **<input.tgz>** and convert it to nifti, **<outprefix.nii.gz>**.
 
 ```
     docker run --rm -ti \
         -v /path/to/dicom/data:/data \
-        vistalab/dcm_convert \
+        vistalab/dcm-convert \
         /data/input.tgz \
         /data/outprefix
 ```
