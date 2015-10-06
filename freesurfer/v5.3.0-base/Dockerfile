@@ -20,9 +20,7 @@ FROM ubuntu:trusty
 # Download FS_v5.3.0 from MGH and untar to /opt
 RUN apt-get update \
     && apt-get -y install tcsh tar wget libgomp1 perl-modules bc \
-    && wget -N ftp://surfer.nmr.mgh.harvard.edu/pub/dist/freesurfer/5.3.0/freesurfer-Linux-centos4_x86_64-stable-pub-v5.3.0.tar.gz \
-    && tar -xzvf freesurfer-Linux-centos4_x86_64-stable-pub-v5.3.0.tar.gz -C /opt \
-    && rm -f freesurfer-Linux-centos4_x86_64-stable-pub-v5.3.0.tar.gz \
+    && wget -N -qO- ftp://surfer.nmr.mgh.harvard.edu/pub/dist/freesurfer/5.3.0/freesurfer-Linux-centos4_x86_64-stable-pub-v5.3.0.tar.gz | tar -xzv -C /opt \
     && mkdir /output
 
 # Configure license 
