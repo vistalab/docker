@@ -46,7 +46,9 @@ if [[ -z $outputs ]]
         chmod -R 777 $SUBJECTS_DIR/*
 
         # Compress the output to /tmp and name with current date and time
-        zip -r /tmp/recon-all`date +"_D%m-%d-%yT%H-%M"`.zip $SUBJECTS_DIR/*
+        pushd $SUBJECTS_DIR
+        zip -r /tmp/recon-all`date +"_D%m-%d-%yT%H-%M"`.zip *
+        popd
         
         # Remove the ucompressed output
         rm -rf $SUBJECTS_DIR/*
