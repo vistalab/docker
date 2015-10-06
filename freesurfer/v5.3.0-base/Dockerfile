@@ -28,7 +28,7 @@ COPY license /opt/freesurfer/.license
 
 # Configure basic freesurfer ENV
 ENV OS Linux
-ENV VERRIDE 0
+ENV FS_OVERRIDE 0
 ENV FIX_VERTEX_AREA= 
 ENV SUBJECTS_DIR /output
 ENV FSF_OUTPUT_FORMAT nii.gz
