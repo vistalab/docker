@@ -1,0 +1,72 @@
+#! /bin/bash
+#
+# 
+
+show_help () 
+{
+        # Show example usage
+        echo -e "[vistalab/fast] 
+
+        Example Usage: 
+            * Note that the directory mounted at '/output' should be EMPTY!
+            docker run --rm -ti -v </input/dir/>:/input -v </output/dir/>:/output vistalab/fast /input/<t1_file.nii.gz> /output/<fast_> \n"
+        # Prompt the user before displaying fast help
+        echo "Would you like to see the DOC for fast? (y/N)"
+        read response
+        if [[ $response == "y" ]]
+            then
+                echo "Showing DOC for recon-all (type 'q' to exit):"
+                sleep 2
+                fast | less
+            else
+                echo "Goodbye."
+        fi
+}
+
+# Check if the inputs are empty. 
+# If so, show example usage and prompt for help
+if [[ -z $@ ]]; then
+    show_help
+    exit
+fi
+
+# Make sure that /output directory is empty (all content will be removed later). 
+_DIR="/output"
+if [ "$(ls -A $_DIR)" ]; then
+    echo -e "$_DIR is not Empty! Please provide an empty directory and mount at '$_DIR'."
+    exit
+fi
+
+# Run the algorithm 
+echo "Running fast..."
+fast $@ 
+
+# Get a list of the folders in the output directory  
+outputs=`find $_DIR -type f`
+
+# If outputs exist, then go on...
+if [[ -z $outputs ]] 
+    then
+        echo "No data found in output directory... Exiting"
+        exit
+    else
+        echo "Compressing outputs..."
+
+        # Set file permissions prior to compression
+        chmod -R 777 $_DIR/*
+
+        # Compress the output to /tmp and name with current date and time
+        pushd $_DIR > /dev/null
+        zip -r /tmp/fast`date +"_D%m-%d-%yT%H-%M-%S"`.zip *
+        popd > /dev/null
+        
+        # Remove the ucompressed output
+        rm -rf $_DIR/*
+
+        # Move the results back and change the file permissions
+        mv /tmp/fast*.zip $_DIR
+        chmod -R 777 $_DIR
+        echo -e "Wrote: `ls $_DIR`"
+fi
+
+
