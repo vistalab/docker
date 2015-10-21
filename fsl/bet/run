@@ -15,7 +15,7 @@ show_help ()
         read response
         if [[ $response == "y" ]]
             then
-                echo "Showing DOC for recon-all (type 'q' to exit):"
+                echo "Showing DOC for bet2 (type 'q' to exit):"
                 sleep 2
                 bet2 | less
             else
