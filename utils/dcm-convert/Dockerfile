@@ -34,7 +34,7 @@ RUN pip install \
     git+https://github.com/scitran/pydicom.git@0.9.9_value_vr_mismatch \
     git+https://github.com/nipy/nibabel.git@3bc31e9a6191fc54667b3387ed5dfaced46bf755 \
     git+https://github.com/moloney/dcmstack.git@6d49fe01235c08ae63c76fa2f3943b49c9b9832d \
-    git+https://github.com/scitran/data.git@32e6e816d2c9f7ad198de5cfce559c18508a1806
+    git+https://github.com/scitran/data.git@2c420ab5d84f311c1480731c67c6a6fb7012c511
 
 # Clone scripts
 RUN git clone https://github.com/scitran/scripts.git /root/scripts \
