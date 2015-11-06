@@ -19,7 +19,11 @@ cd docker/freesurfer/v5.3.0-core/
 ### Example Usage ###
 To run a Freesurfer command (e.g., ```mri-convert```) from this image you can do the following:
 ```
-docker run --rm -ti -v </path/to/input/data>:/input -v </path/for/output/data>:/opt/freesurfer/subjects vistalab/freesurfer-core mri_convert [options] <in volume> <out volume>
+docker run --rm -ti \
+  -v </path/to/input/data>:/input \
+  -v </path/for/output/data>:/opt/freesurfer/subjects \
+  vistalab/freesurfer-core \
+  mri_convert [options] <in volume> <out volume>
 ```
 * Note that you are mounting the directory (```-v``` flag) which contains your data in the container at ```/input``` and mounting the directory where you want your output data within the container at ```/opt/freesurfer/subjects``` - which is Freesurfer's default subjects directory. 
 
