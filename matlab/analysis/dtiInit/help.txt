@@ -1,0 +1,81 @@
+%
+% Read a JSON object, a JSON file, or a directory containing a json file
+% and run dtiInit inside of a docker container (vistalab/dtiinit). 
+% 
+% 
+% INPUTS:
+%       json - a JSON string, a JSON file, or a directory containing a json
+%              file, in the following format (Note that 'input_dir' and
+%              'output_dir' are the only REQUIRED inputs)
+%
+% OUTPUTS: 
+%       A docker run produces a zip file containing all of the outputs
+%       from the algorithm. The name of the output zip file is:
+%           'dtiInit[date-time].zip'
+%
+%
+% JSON SCHEMA:
+%       Below is an example JSON file with the defaults show for 'params'.
+%       See dtiInitParams.m for more info regarding params. Note that
+%       "input_dir" and "output_dir" are required and must be in the
+%       context of the container. 
+% 
+%             { 
+%                 "input_dir": "/input",
+%                 "output_dir": "/output",
+%                 "dwi_file": "",
+%                 "bvec_file": "",
+%                 "bval_file": "",
+%                 "t1_file": "",
+%                 "params":  
+%                     {
+%                         "bvalue": "",
+%                         "gradDirsCode": "",
+%                         "clobber": 0,
+%                         "dt6BaseName": "",
+%                         "flipLrApFlag": 0,
+%                         "numBootStrapSamples": 500,
+%                         "fitMethod": "ls",
+%                         "nStep": 50,
+%                         "eddyCorrect": 0,
+%                         "excludeVols": "",
+%                         "bsplineInterpFlag": 0,
+%                         "phaseEncodeDir": "",
+%                         "dwOutMm": [2, 2, 2],
+%                         "rotateBvecsWithRx": 0,
+%                         "rotateBvecsWithCanXform": 0,
+%                         "bvecsFile": "",
+%                         "bvalsFile": "",
+%                         "noiseCalcMethod": "b0",
+%                         "outDir": "/output/"
+%                     }
+%             }
+% 
+% 
+% REQUIRED INPUTS:
+%       'input_dir' and 'output_dir' are the only required inputs.  
+% 
+% 
+% HELP: 
+%       If 'help', '-h', '--help', or nothing (nargin==0), is passed in
+%       this help will be displayed.
+% 
+% 
+% USAGE:
+%       Pass in a JSON file, a JSON text string, or a path to a directory
+%       containing a JSON file to the docker container to initiate a
+%       dtiInit processing run (see INPUT section for JSON schema):
+% 
+%       % Using a JSON file
+%        docker run --rm -ti -v `pwd`/input:/input -v `pwd`/output:/output vistalab/dtiinit /input/<JSON_filename>.json
+% 
+%       % Using a JSON string
+%        docker run --rm -ti -v `pwd`/input:/input -v `pwd`/output:/output vistalab/dtiinit '{"input_dir":"/input", "output_dir": "/output"}'
+% 
+%       % Using a directory (in the container), containing a JSON (.json)
+%        docker run --rm -ti -v `pwd`/input:/input -v `pwd`/output:/output vistalab/dtiinit /input/
+% 
+% 
+% 
+% (C) Vista Lab, Stanford University, 2015
+% 

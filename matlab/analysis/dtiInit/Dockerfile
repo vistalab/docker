@@ -14,6 +14,9 @@ ADD https://github.com/vistalab/vistasoft/raw/f1e7c57bb01bd281be6a8b93cc162994a1
 ADD https://github.com/vistalab/vistasoft/raw/f1e7c57bb01bd281be6a8b93cc162994a1307b86/mrDiffusion/templates/MNI_EPI.nii.gz /templates/
 ADD https://github.com/vistalab/vistasoft/raw/master/mrDiffusion/dtiInit/standalone/dtiInitStandAloneJsonSchema.json /templates/
 
+# Add the help text to display when no args are passed in.
+COPY help.txt /opt/help.txt
+
 # Ensure that the executable files are executable
 RUN chmod +x /usr/local/bin/bet2 && chmod +x /usr/local/bin/dtiInit
 
