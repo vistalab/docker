@@ -1,0 +1,18 @@
+{ 
+    "input_dir": "/input",
+    "output_dir": "/output",
+    "hipNameBase": "asegHippo.mgz",
+    "cluster" : 0,
+    "lta_list" : "Acqu",
+    "orientations" : "PCA",
+    "methods" : "PERC",
+    "ComoPost" : "Insausti",
+    "Head_Perc_List" : 422,
+    "DEBUG":0,
+    "WRITE_MGZ" : 0,  
+    "orden" : 2, 
+    "mydecimate" : 5, 
+    "orig_datos" : "aseg",
+    "structName" : "HIPPO",
+    "sufixName" : "v99"      
+}

@@ -1,0 +1,109 @@
+#! /bin/bash
+# This script is meant to evoke the algorithm without requiring any input arguments
+# 
+
+OUTPUT_DIR=/output
+INPUT_DIR=/input
+JSON_FILE=/opt/hippovol_params.json
+do_err_exit=0
+
+# Make sure that /output directory is empty (all content will be removed later). 
+if [ "-d" "$OUTPUT_DIR" ]
+    then
+        if [ "$(ls -A $OUTPUT_DIR)" ]; then
+            echo -e "$OUTPUT_DIR is not Empty! Please provide an empty directory and mount at '$OUTPUT_DIR'."
+            exit 1
+        fi
+    else
+        mkdir $OUTPUT_DIR
+fi
+
+
+# Check if the inputs are empty. 
+# If so, show example usage and prompt for help
+if [[ -z $@ ]] 
+    then
+        input_file=`find $INPUT_DIR -type f -name "*.zip*" | head -1`
+      if [[ -n $input_file ]] 
+        then
+            # RUN ON THE ZIP
+            echo "Unzipping $input_file ..."
+            cd $INPUT_DIR
+            unzip -q $input_file
+            rm -rf $input_file
+
+            # Remove the average directories
+            find $INPUT_DIR/* -maxdepth 1 -name "*average" -exec rm -rf {} \;
+
+            # Run the fs commands from Gari
+            mgz_file=`find $INPUT_DIR/* -type f -name "aseg.mgz"`
+            if [[ -n $mgz_file ]]; then
+                echo "Found $mgz_file. Extracting hippocampi..."
+            else
+                    echo "No MGZ file could be found. Exiting!"
+                    exit 1
+            fi
+            
+            pushd `dirname $mgz_file` >> /dev/null
+            mri_extract_label aseg.mgz 17 lh.asegHippo.mgz
+            mri_extract_label aseg.mgz 53 rh.asegHippo.mgz
+            popd >> /dev/null
+            
+            # Get the contents of the zip out to the main input dir 
+            find $INPUT_DIR/ -mindepth 2 -maxdepth 2 -type d -exec mv {} $INPUT_DIR \;
+            rmdir $INPUT_DIR/* &> /dev/null # Remove the empty directories (quietly)
+            
+            echo "Running hippovol..."
+            /opt/hippovol $JSON_FILE &> /dev/null
+      else
+            echo "No input file found! Exiting!"
+            exit 1
+      fi
+else
+    echo "Reading from inputs..."
+    /opt/hippovol $@
+fi
+
+
+# Get a list of the folders in the output directory  
+outputs=`find $OUTPUT_DIR -name "*.zip" -type f`
+
+# If outputs exist, then go on...
+if [[ -z $outputs ]] 
+    then
+        echo "Expected results NOT found in output directory!"
+        chmod -R 777 $OUTPUT_DIR
+        do_err_exit=1
+    else
+
+        # Set file permissions prior to compression
+        chmod -R 777 $OUTPUT_DIR/*
+        echo -e "Wrote: `ls $OUTPUT_DIR`"
+fi
+
+# Zip up the input_file again to be uploaded...
+chmod -R 777 $INPUT_DIR
+cd $INPUT_DIR
+echo "Recompressing $input_file ..."
+zip -r $(basename $input_file) * &> /dev/null
+
+# Remove the uncompressed folder 
+echo "Removing uncompressed folder..."
+find $INPUT_DIR/* -maxdepth 0 -type d -exec rm -rf {} \;
+chmod -R 777 $INPUT_DIR
+
+# Check for the compressed file
+if [[ -e $input_file ]]; then
+    echo "DONE!"
+else
+    do_err_exit=1
+fi
+
+# Check for errors
+if [[ $do_err_exit == 1 ]]; then
+    echo "Something went wrong!"
+    exit 1
+else
+    exit 0
+fi
+
