@@ -1,0 +1,58 @@
+#! /bin/bash
+# This script is meant to evoke the algorithm without requiring any input arguments
+# 
+
+
+# Make sure that /output directory is empty (all content will be removed later). 
+OUTPUT_DIR=/output
+INPUT_DIR=/input
+if [ "-d" "$OUTPUT_DIR" ]
+    then
+        if [ "$(ls -A $OUTPUT_DIR)" ]; then
+            echo -e "$OUTPUT_DIR is not Empty! Please provide an empty directory and mount at '$OUTPUT_DIR'."
+            exit 1
+        fi
+    else
+        echo "$OUTPUT_DIR not found. It will be created."
+        mkdir $OUTPUT_DIR
+fi
+
+
+# Check if the inputs are empty. 
+# If so, show example usage and prompt for help
+if [[ -z $@ ]] 
+    then
+      input_file=`find $INPUT_DIR -type f -name "*.nii*" | head -1`
+      if [[ -n $input_file ]] 
+        then
+            /opt/qa_report.py $INPUT_DIR -i $input_file 
+      else
+            echo "No inputs were provided and $INPUT_DIR has no valid input files!"
+            exit 1
+      fi
+else
+    /opt/qa_report.py $@
+fi
+
+
+# Get a list of the folders in the output directory  
+outputs=`find $INPUT_DIR -type f | grep -v $input_file`
+
+
+# If outputs exist, then go on...
+if [[ -z $outputs ]] 
+    then
+        echo "No results found in output directory... Exiting"
+        exit 1
+    else
+        for o in $outputs; 
+            do
+                mv $o $OUTPUT_DIR
+            done
+        chmod -R 777 $OUTPUT_DIR
+        echo -e "Wrote: `ls $OUTPUT_DIR`"
+fi
+
+exit 0
+
+
