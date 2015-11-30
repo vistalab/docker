@@ -15,7 +15,7 @@ COPY run /opt/run
 
 # Make sure we can execute the script and install zip
 RUN chmod +x /opt/run \
-    && apt-get -y install zip
+    && apt-get update && apt-get -y install zip
 
 # Set entrypoint to run the script
 ENTRYPOINT ["/opt/run"]
