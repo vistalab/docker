@@ -19,6 +19,7 @@ show_help ()
                 recon-all | less
             else
                 echo "Goodbye."
+                exit 0
         fi
 }
 
@@ -26,7 +27,6 @@ show_help ()
 # If so, show example usage and prompt for help
 if [[ -z $@ ]]; then
     show_help
-    exit
 fi
 
 # Run the algorithm 
@@ -38,7 +38,8 @@ outputs=`find $SUBJECTS_DIR -mindepth 1 -maxdepth 2 -type d`
 # If outputs exist, then go on...
 if [[ -z $outputs ]] 
     then
-        exit
+        echo "Expected outputs were NOT found!"
+        exit 1
     else
         echo "Compressing outputs..."
 
@@ -46,16 +47,14 @@ if [[ -z $outputs ]]
         chmod -R 777 $SUBJECTS_DIR/*
 
         # Compress the output to /tmp and name with current date and time
-        pushd $SUBJECTS_DIR
-        zip -r /tmp/recon-all`date +"_D%m-%d-%yT%H-%M"`.zip *
-        popd
-        
-        # Remove the ucompressed output
-        rm -rf $SUBJECTS_DIR/*
+        results_dir=/recon-all_results_$4/
+        mkdir $results_dir
 
-        # Move the results back and change the file permissions
-        mv /tmp/recon-all*.zip $SUBJECTS_DIR
+        mv $SUBJECTS_DIR/* $results_dir
+        zip -r /$SUBJECTS_DIR/recon-all_results_$4`date +"_D%m-%d-%yT%H-%M"`.zip $results_dir
+        rm -rf $results_dir
+        
         chmod -R 777 $SUBJECTS_DIR
 fi
 
-
+exit 0
