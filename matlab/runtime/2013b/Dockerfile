@@ -22,5 +22,5 @@ RUN apt-get -qq update && apt-get -qq install -y unzip xorg wget curl && \
 
 # Configure environment variables for MCR
 ENV LD_LIBRARY_PATH /opt/mcr/v82/runtime/glnxa64:/opt/mcr/v82/bin/glnxa64:/opt/mcr/v82/sys/os/glnxa64:/opt/mcr/v82/sys/java/jre/glnxa64/jre/lib/amd64/native_threads:/opt/mcr/v82/sys/java/jre/glnxa64/jre/lib/amd64/server:/opt/mcr/v82/sys/java/jre/glnxa64/jre/lib/amd64 
-ENV XAPPLRESDIR /opt/mcr/v82/X11/app-default
+ENV XAPPLRESDIR /opt/mcr/v82/X11/app-defaults
 
