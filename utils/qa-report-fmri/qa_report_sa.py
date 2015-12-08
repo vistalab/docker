@@ -209,7 +209,7 @@ def generate_qa_report(nifti_file, nifti_path, force=False, spike_thresh=6., nsk
             median_tsnr = np.ma.median(0)
         
         
-        qa_filenames = [qa_file_name + u'.json', qa_file_name + u'.png']
+        qa_filenames = [u'qa_report.json', u'qa_report.png']
 
         json_file = os.path.join(nifti_path, qa_filenames[0])
         print("%s nifti file (%s) QA: writing report to %s..." % (time.asctime(), nifti_file, json_file))

@@ -35,8 +35,8 @@ else
 fi
 
 
-# Get a list of the folders in the output directory  
-outputs=`find $INPUT_DIR -type f | grep -v $input_file`
+# Get a list of the files in the output directory  
+outputs=`find $INPUT_DIR -type f -name "*.png"`
 
 
 # If outputs exist, then go on...
