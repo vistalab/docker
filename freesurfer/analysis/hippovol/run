@@ -66,34 +66,58 @@ fi
 
 
 # Get a list of the folders in the output directory  
-outputs=`find $OUTPUT_DIR -name "*.zip" -type f`
+output_file=`find $OUTPUT_DIR -name "*.zip" -type f`
 
 # If outputs exist, then go on...
-if [[ -z $outputs ]] 
+if [[ -z $output_file ]] 
     then
         echo "Expected results NOT found in output directory!"
         chmod -R 777 $OUTPUT_DIR
         do_err_exit=1
     else
 
-        # Set file permissions prior to compression
+        # Unzip the output file and change perms
+        cd $OUTPUT_DIR
+        unzip -q $output_file
         chmod -R 777 $OUTPUT_DIR/*
+        
+        # Move the csv file to /tmp remove outputs and move it back
+        fp_csv_file=`find $OUTPUT_DIR -type f -name "*.csv"`
+        mv $fp_csv_file /tmp
+        csv_file=`basename $fp_csv_file`
+        rm -rf $OUTPUT_DIR/*
+        mv /tmp/$csv_file $OUTPUT_DIR
+        
+        # Change the filename of the csv file to the name of the output file
+        output_base=`basename $output_file` 
+        csv_new_name=${output_base%.*}
+        mv $OUTPUT_DIR/$csv_file $OUTPUT_DIR/$csv_new_name.csv
         echo -e "Wrote: `ls $OUTPUT_DIR`"
+
 fi
+
 
 # Zip up the input_file again to be uploaded...
 chmod -R 777 $INPUT_DIR
 cd $INPUT_DIR
+
+bni=`basename $input_file`
+input_dir_name=${bni%.*}
+
+mkdir $input_dir_name
+mv * $input_dir_name &> /dev/null
+
 echo "Recompressing $input_file ..."
 zip -r $(basename $input_file) * &> /dev/null
 
 # Remove the uncompressed folder 
-echo "Removing uncompressed folder..."
+echo "Cleaning up..."
 find $INPUT_DIR/* -maxdepth 0 -type d -exec rm -rf {} \;
 chmod -R 777 $INPUT_DIR
 
 # Check for the compressed file
 if [[ -e $input_file ]]; then
+    find $INPUT_DIR -type f -exec mv {} $OUTPUT_DIR \;
     echo "DONE!"
 else
     do_err_exit=1
