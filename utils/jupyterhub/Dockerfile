@@ -19,14 +19,18 @@ FROM jupyter/jupyterhub:latest
 
 MAINTAINER Michael Perry <lmperry@stanford.edu>
 
-# Kerberize and install deps for matplotlib
+# Kerberize and install python libs
 RUN apt-get update && apt-get install -y \
     wget \
     krb5-user libpam-krb5 \
     libpng12-dev libfreetype6-dev \
+    libblas-dev liblapack-dev gfortran build-essential python-dev \
     && mv /etc/krb5.conf /etc/krb5.conf.dpkg-dist \
     && wget -O /etc/krb5.conf http://web.stanford.edu/dept/its/support/kerberos/dist/krb5.conf \
-    && pip install matplotlib --upgrade
+    && pip install matplotlib \
+    && pip install numpy \
+    && pip install scipy \ 
+    && pip install nibabel  
 
 # Make notebook directories and make a soft-link to that directory for new users
 RUN mkdir -p /srv/jupyterhub/notebooks/ \
