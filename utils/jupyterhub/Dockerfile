@@ -36,7 +36,15 @@ RUN apt-get update && apt-get install -y \
 RUN mkdir -p /srv/jupyterhub/notebooks/ \
     && ln -s /srv/jupyterhub/notebooks /etc/skel/notebooks 
 
-EXPOSE 8000  
+# SSL: Create a self-signed cert on the fly (stop-gap measure)
+# An alternative method would be to mount in the host's ssl cert and key (untested)
+# https://tools.stanford.edu/cgi-bin/cert-request - to request a host cert.
+RUN mkdir -p /srv/jupyterhub/ssl \
+    && cd /srv/jupyterhub/ssl \
+    && openssl req -new -newkey rsa:2048 -rand /dev/urandom -nodes -keyout jupyter.key -out jupyter.csr -subj "/C=US/ST=California/L=Stanford/O=Global Security/OU=IT Department/CN=stanford.edu" \
+    && openssl x509 -req -days 365 -in jupyter.csr -signkey jupyter.key -out jupyter.crt
+
+EXPOSE 8000
 
 ONBUILD ADD jupyterhub_config.py /srv/jupyterhub/jupyterhub_config.py
 

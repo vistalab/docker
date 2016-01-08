@@ -54,7 +54,7 @@ c.Application.log_level = 'DEBUG'
 # Path to SSL key file for the public facing interface of the proxy
 # 
 # Use with ssl_cert
-####c.JupyterHub.ssl_key = '/srv/jupyterhub/ssl/jupyter.key'
+c.JupyterHub.ssl_key = '/srv/jupyterhub/ssl/jupyter.key'
 
 # The cookie secret to use to encrypt cookies.
 # 
@@ -73,7 +73,7 @@ c.Application.log_level = 'DEBUG'
 # Path to SSL certificate file for the public facing interface of the proxy
 # 
 # Use with ssl_key
-###c.JupyterHub.ssl_cert = '/srv/jupyterhub/ssl/jupyter.cer'
+c.JupyterHub.ssl_cert = '/srv/jupyterhub/ssl/jupyter.crt'
 
 # Set a logging.FileHandler on this file.
 # c.JupyterHub.extra_log_file = ''
