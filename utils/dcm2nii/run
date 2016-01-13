@@ -1,0 +1,29 @@
+#! /bin/bash
+#
+# 
+
+INPUT_DIR=/input
+OUTPUT_DIR=/output
+
+# Make sure the input directory is not empty
+if [[ "$(ls -A $INPUT_DIR)" ]] ; then
+    echo "Starting..."
+else 
+    echo "Input directory is empty:"
+    dcm2nii
+    exit 1
+fi 
+
+# Make sure that /output directory is empty (all content will be removed later). 
+if [ "$(ls -A $OUTPUT_DIR)" ]; then
+    echo -e "$OUTPUT_DIR is not Empty! Please provide an empty directory and mount at '$OUTPUT_DIR'."
+    exit 1
+fi
+
+# Run the algorithm 
+dcm2nii $@ -o $OUTPUT_DIR $INPUT_DIR 
+
+chmod -R 777 $OUTPUT_DIR/*
+echo -e "Wrote: `ls $OUTPUT_DIR`"
+exit 0
+
