@@ -8,9 +8,6 @@
 # Start with FSL image
 FROM vistalab/fsl-v5.0
 
-# Install zip
-RUN apt-get update && apt-get install -y zip
-
 # Put run in place
 COPY run /opt/run
 
