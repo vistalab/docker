@@ -12,7 +12,9 @@
 #       ./adduser_jupyter.sh jupyter lmperry
 #
 
-# TODO: SSL configuration and update python file
+# TODO: Copy a list of users to create in the contianer
+# TODO: Copy the create script to the container
+# TODO: Run a command to create each user inside the container
 #
 
 FROM jupyter/jupyterhub:latest
