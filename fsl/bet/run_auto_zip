@@ -1,0 +1,67 @@
+#! /bin/bash
+# This script is meant to evoke the algorithm without requiring any input arguments
+# 
+
+
+# Make sure that /output directory is empty (all content will be removed later). 
+_DIR=/output
+if [ "-d" "$_DIR" ]
+    then
+        if [ "$(ls -A $_DIR)" ]; then
+            echo -e "$_DIR is not Empty! Please provide an empty directory and mount at '$_DIR'."
+            exit 1
+        fi
+    else
+        mkdir $_DIR
+fi
+
+
+# Check if the inputs are empty. 
+# If so, show example usage and prompt for help
+if [[ -z $@ ]] 
+    then
+        input_file=`find /input -type f -name "*.nii*" | head -1`
+      if [[ -n $input_file ]] 
+        then
+            echo "Running bet2 on $input_file"
+            bet2 $input_file $_DIR/bet2`date +"_D%m-%d-%yT%H%M%S"` -o -m -s -e 
+
+      else
+            exit 1
+      fi
+else
+    echo "Running bet2..."
+    bet2 $@
+fi
+
+
+# Get a list of the folders in the output directory  
+outputs=`find $_DIR -type f`
+
+# If outputs exist, then go on...
+if [[ -z $outputs ]] 
+    then
+        echo "No results found in output directory... Exiting"
+        exit 1
+    else
+        echo "Compressing outputs..."
+
+        # Set file permissions prior to compression
+        chmod -R 777 $_DIR/*
+
+        _tmpdir=/tmp/bet2_results
+        mkdir $_tmpdir
+        mv $_DIR/* $_tmpdir
+
+        # Compress the output to /tmp and name with current date and time
+        pushd $_tmpdir > /dev/null
+        zip -r /$_DIR/bet2`date +"_D%m-%d-%yT%H%M%S"`.zip *
+        popd > /dev/null
+        
+        # Move the results back and change the file permissions
+        chmod -R 777 $_DIR
+        echo -e "Wrote: `ls $_DIR`"
+        exit 0
+fi
+
+
