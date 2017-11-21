@@ -52,5 +52,11 @@ docker run --rm -ti \
     '{"input_dir":"/input", "output_dir": "/output", "params": {"fitMethod": "ls"}}'
 ```
 
+### Building the executable:
+To build the dtiInit Executable clone the vistalab/vistasoft repo and download SPM8. Then to build the compiled version of the code: 
+
+`mcc -m <code_path>/vistasoft/mrDiffusion/dtiInit/standalone/dtiInitStandAloneWrapper.m -I <code_path>/vistasoft -I <code_path>/spm8 `
+
+* Note the version downloaded to this container was built on MatlabR2013b
 
 

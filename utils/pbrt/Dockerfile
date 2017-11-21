@@ -26,7 +26,7 @@ RUN apt-get update \
 RUN mkdir /pbrt
 
 WORKDIR /pbrt/
-RUN wget https://github.com/ydnality/pbrt-v2-spectral/archive/master.zip
+RUN wget https://github.com/scienstanford/pbrt-v2-spectral/archive/master.zip
 RUN unzip master.zip && rm master.zip
 
 WORKDIR /pbrt/pbrt-v2-spectral-master/src/
