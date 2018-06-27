@@ -13,6 +13,8 @@ INPUT_DIRECTORY=$(dirname $1)
 OUTPUT_FILE=$INPUT_FILE_NAME".dat"
 
 gsutil cp $INPUT_DIRECTORY/*.zip ./
+gsutil cp $INPUT_DIRECTORY/*_materials.pbrt ./
+gsutil cp $INPUT_DIRECTORY/*_geometry.pbrt ./
 gsutil cp $1 ./
 unzip *.zip
 

@@ -16,7 +16,7 @@ RUN apt-get update
 RUN apt-get install cmake -yq
 
 RUN apt-get update -yq
-RUN apt-get install -yq build-essential gcc-4.8 g++-4.8 make bison flex libpthread-stubs0-dev zlib1g-dev
+RUN apt-get install -yq build-essential gcc-4.8 g++-4.8 make bison flex libpthread-stubs0-dev zlib1g-dev libgsl0-dev
 
 # Do we need these?
 #RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.6 60 --slave /usr/bin/g++ g++ /usr/bin/g++-4.6
