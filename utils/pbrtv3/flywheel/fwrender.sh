@@ -35,6 +35,8 @@ OUTPUT_FILE=$INPUT_FILE_NAME".dat"
 LABEL_FILE=$LABEL_FILE".txt"
 
 # Render
+# 1. If there is a *_depth.pbrt and/or *_mesh.pbrt, then we need to run subsequent runs of pbrt 
+#    with that reflected in the prbt command, such as "pbrt --outfile $OUTPUT_FILE_depth.dat $INPUT_FILE_depth.pbrt
 pbrt --outfile $OUTPUT_FILE $INPUT_FILE
 
 
