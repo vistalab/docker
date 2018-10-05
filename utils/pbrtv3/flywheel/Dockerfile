@@ -10,7 +10,5 @@ WORKDIR /
 ENV HOME /
 
 # TODO: Copy python functions as well.
-COPY fw_render.sh /
-RUN chmod +x /fw_render.sh
-
-
+COPY fwrender.sh /
+RUN chmod +x /fwrender.sh
