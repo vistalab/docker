@@ -13,6 +13,9 @@ if __name__ == "__main__":
     import os
     import sys
     import glob
+    import pytz
+    import datetime
+    import tzlocal
     import flywheel
 
     api_key = sys.argv[1]
@@ -29,8 +32,8 @@ if __name__ == "__main__":
 
     # Create the acquisition in the session to upload.
     session_label = acquisition_label.split("_")[0]
-    session_id = fw.add_session(flywheel.Session(project=upload_project, label=session_label))
-    acquisition_id = fw.add_acquisition(flywheel.Acquisition(session=session_id, label=acquisition_label))
+    session_id = fw.add_session(flywheel.Session(project=project_id, label=session_label, timestamp=datetime.datetime.utcnow().replace(tzinfo=pytz.timezone('America/Los_Angeles')).isoformat()))
+    acquisition_id = fw.add_acquisition(flywheel.Acquisition(session=session_id, label=acquisition_label, timestamp=datetime.datetime.utcnow().replace(tzinfo=pytz.timezone('America/Los_Angeles')).isoformat()))
     print('Uploading files...')
     for f in upload_files:
         print('\t%s...' % (f))
