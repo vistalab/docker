@@ -19,6 +19,10 @@ def download_assets(asset_string, dl_directory, input_dir):
     """
     import tempfile
     import shutil
+    import flywheel
+    import zipfile
+    import os
+
     assets = asset_string.split(' ')
     assets_dict = dict(zip(assets[::2], assets[1::2]))
     print('Downloading assets...')
@@ -29,21 +33,24 @@ def download_assets(asset_string, dl_directory, input_dir):
         output_file = os.path.join(dl_directory, f_name)
         fw.download_file_from_acquisition(a_id, f_name, output_file)
 
-        # Make a temp dir and unzip there
-        temp_dir = os.path.join(tempfile.gettempdir(), f_name.strip('.zip'))
-        if not os.path.exists(temp_dir):
-            os.mkdir(temp_dir)
-        cmd = 'unzip %s -d %s' % (output_file, temp_dir)
-        print(cmd)
-        os.system(cmd)
+        # If this is a zip file make a temp dir and unzip there, otherwise move to the input dir.
+        if zipfile.is_zipfile(output_file):
+            temp_dir = os.path.join(tempfile.gettempdir(), f_name.strip('.zip'))
+            if not os.path.exists(temp_dir):
+                os.mkdir(temp_dir)
+            cmd = 'unzip %s -d %s' % (output_file, temp_dir)
+            print(cmd)
+            os.system(cmd)
 
-        # Rsync to input_dir
-        cmd = 'rsync -a %s/* %s/' % (temp_dir, input_dir)
-        print(cmd)
-        os.system(cmd)
+            # Rsync to input_dir
+            cmd = 'rsync -a %s/* %s/' % (temp_dir, input_dir)
+            print(cmd)
+            os.system(cmd)
 
-        # Remove tempdir
-        shutil.rmtree(temp_dir)
+            # Remove tempdir
+            shutil.rmtree(temp_dir)
+        else:
+            os.rename(output_file, os.path.join(input_dir, f_name))
 
 if __name__ == "__main__":
 
