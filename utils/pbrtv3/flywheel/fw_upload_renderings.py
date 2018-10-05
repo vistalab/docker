@@ -17,7 +17,8 @@ if __name__ == "__main__":
 
     api_key = sys.argv[1]
     input_directory = sys.argv[2]
-    upload_acquisition = sys.argv[3]
+    upload_project = sys.argv[3]
+    acquisition_label = sys.argv[4]
 
     # 0. Initialize Flywheel
     fw = flywheel.Flywheel(api_key)
@@ -26,8 +27,12 @@ if __name__ == "__main__":
     upload_files = list(glob.glob(os.path.join(input_directory, '*.dat')))
     upload_files.extend(glob.glob(os.path.join(input_directory, '*.txt')))
 
+    # Create the acquisition in the session to upload.
+    session_label = acquisition_label.split("_")[0]
+    session_id = fw.add_session(flywheel.Session(project=upload_project, label=session_label))
+    acquisition_id = fw.add_acquisition(flywheel.Acquisition(session=session_id, label=acquisition_label))
     print('Uploading files...')
     for f in upload_files:
         print('\t%s...' % (f))
-        fw.upload_file_to_acquisition(upload_acquisition)
+        fw.upload_file_to_acquisition(acquisition_id, f)
     print('Done!')
