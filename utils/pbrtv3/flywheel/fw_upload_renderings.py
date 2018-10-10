@@ -32,7 +32,17 @@ if __name__ == "__main__":
 
     # Create the acquisition in the session to upload.
     session_label = acquisition_label.split("_")[0]
-    session_id = fw.add_session(flywheel.Session(project=project_id, label=session_label, timestamp=datetime.datetime.utcnow().replace(tzinfo=pytz.timezone('America/Los_Angeles')).isoformat()))
+
+    # Find the session if it already exists
+    project_sessions = fw.get_project_sessions(upload_project)
+    this_session = [ x for x in project_sessions if x['label'] == session_label ]
+
+    if this_session and len(this_session) == 1:
+        session_id = this_session[0]['_id']
+        print('Using existing session...')
+    else:
+        session_id = fw.add_session(flywheel.Session(project=upload_project, label=session_label, timestamp=datetime.datetime.utcnow().replace(tzinfo=pytz.timezone('America/Los_Angeles')).isoformat()))
+
     acquisition_id = fw.add_acquisition(flywheel.Acquisition(session=session_id, label=acquisition_label, timestamp=datetime.datetime.utcnow().replace(tzinfo=pytz.timezone('America/Los_Angeles')).isoformat()))
     print('Uploading files...')
     for f in upload_files:

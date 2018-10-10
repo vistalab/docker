@@ -6,10 +6,10 @@ def download_input_data(input_acq_id, input_directory):
     1. Download all INPUT files in the acquisition with ID=$2
     """
     print('Downloading acquisition files...')
-    acquisition_files = fw.get_acquisition(input_acquisition_id)['files']
+    acquisition_files = fw.get_acquisition(input_acq_id)['files']
     for f in acquisition_files:
         print('\t%s ...' % (f['name']))
-        fw.download_file_from_acquisition(input_acquisition_id, f['name'], os.path.join(input_directory, f['name']))
+        fw.download_file_from_acquisition(input_acq_id, f['name'], os.path.join(input_directory, f['name']))
 
 
 def download_assets(asset_string, dl_directory, input_dir):
@@ -22,6 +22,7 @@ def download_assets(asset_string, dl_directory, input_dir):
     import flywheel
     import zipfile
     import os
+    import time
 
     assets = asset_string.split(' ')
     assets_dict = dict(zip(assets[::2], assets[1::2]))
@@ -31,7 +32,14 @@ def download_assets(asset_string, dl_directory, input_dir):
 
         print('\t%s/%s ...' % (a_id, f_name))
         output_file = os.path.join(dl_directory, f_name)
-        fw.download_file_from_acquisition(a_id, f_name, output_file)
+        count = 0
+        if count < 3:
+            status = fw.download_file_from_acquisition(a_id, f_name, output_file)
+            if status == 0:
+                break
+            else:
+                time.sleep(3)
+                count +=1
 
         # If this is a zip file make a temp dir and unzip there, otherwise move to the input dir.
         if zipfile.is_zipfile(output_file):
@@ -49,8 +57,12 @@ def download_assets(asset_string, dl_directory, input_dir):
 
             # Remove tempdir
             shutil.rmtree(temp_dir)
+            os.remove(output_file)
         else:
-            os.rename(output_file, os.path.join(input_dir, f_name))
+            new_name = os.path.join(input_dir, f_name)
+            cmd='mv %s %s' % (output_file, new_name)
+            print(cmd)
+            os.system(cmd)
 
 if __name__ == "__main__":
 
@@ -70,7 +82,7 @@ if __name__ == "__main__":
     input_acq_id = sys.argv[2]
     asset_string = sys.argv[3]
     input_directory = sys.argv[4]
-
+    print(api_key, input_directory)
     # 0. Initialize Flywheel
     fw = flywheel.Flywheel(api_key)
 
@@ -80,4 +92,4 @@ if __name__ == "__main__":
     # 2. Download all files in assets (contianing the ids and filenames)
     # 3. Unzip all cgresource files to the INPUT_DIRECTORY
     # 4. Resulting in $INPUT_DIRECTORY/scene & $INPUT_DIRECTORY/textures AND $INPUT_DIRECTORY/*.pbrt
-    download_assets(asset_string, '/tmp', input_dir)
+    download_assets(asset_string, '/tmp', input_directory)
