@@ -1,3 +1,4 @@
+# debug mode, should change back to
 FROM vistalab/pbrt-v3-spectral
 
 ENV DEBIAN_FRONTEND noninteractive
