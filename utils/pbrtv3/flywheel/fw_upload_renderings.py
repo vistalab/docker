@@ -41,7 +41,7 @@ if __name__ == "__main__":
         session_id = this_session[0]['_id']
         print('Using existing session...')
     else:
-        session_id = fw.add_session(flywheel.Session(project=upload_project, label=session_label, subject='renderings', timestamp=datetime.datetime.utcnow().replace(tzinfo=pytz.timezone('America/Los_Angeles')).isoformat()))
+        session_id = fw.add_session(flywheel.Session(project=upload_project, label=session_label, subject={'code': 'renderings', 'label': 'renderings'}, timestamp=datetime.datetime.utcnow().replace(tzinfo=pytz.timezone('America/Los_Angeles')).isoformat()))
 
     acquisition_id = fw.add_acquisition(flywheel.Acquisition(session=session_id, label=acquisition_label, timestamp=datetime.datetime.utcnow().replace(tzinfo=pytz.timezone('America/Los_Angeles')).isoformat()))
     print('Uploading files...')
