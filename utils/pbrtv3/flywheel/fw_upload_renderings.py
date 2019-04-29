@@ -35,7 +35,7 @@ if __name__ == "__main__":
 
     # Find the session if it already exists
     project_sessions = fw.get_project_sessions(upload_project)
-    this_session = [ x for x in project_sessions if x['label'] == session_label and x['session']['subject']['label'] == 'renderings' ]
+    this_session = [ x for x in project_sessions if x['label'] == session_label and x['subject']['label'] == 'renderings' ]
 
     if this_session and len(this_session) == 1:
         session_id = this_session[0]['_id']
