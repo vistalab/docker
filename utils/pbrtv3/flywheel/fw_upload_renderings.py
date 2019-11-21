@@ -27,7 +27,7 @@ if __name__ == "__main__":
 
     # If the session_label was not passed into fwrender.sh, then we will have
     # received a 'null' string here. Thus we check and if 'null' is the label,
-    # we will fall back to using the acquistiion label to set the session label.
+    # we will fall back to using the acquistion label to set the session label.
     if session_label == 'null':
         session_label = acquisition_label.split("_")[0]
 
@@ -55,7 +55,15 @@ if __name__ == "__main__":
     else:
         session_id = fw.add_session(flywheel.Session(project=upload_project, label=session_label, subject={'code': subject_label, 'label': subject_label}, timestamp=datetime.datetime.utcnow().replace(tzinfo=pytz.timezone('America/Los_Angeles')).isoformat()))
 
-    acquisition_id = fw.add_acquisition(flywheel.Acquisition(session=session_id, label=acquisition_label, timestamp=datetime.datetime.utcnow().replace(tzinfo=pytz.timezone('America/Los_Angeles')).isoformat()))
+    # Check for the existence of the acquisition
+    acquisitions = [ x for x in fw.get_session_acquisitions(session_id) if x.label == acquisition_label ]
+
+    if acquisitions:
+        acquistion_id = acquisitions[0]['_id']
+    else:
+        acquisition_id = fw.add_acquisition(flywheel.Acquisition(session=session_id, label=acquisition_label, timestamp=datetime.datetime.utcnow().replace(tzinfo=pytz.timezone('America/Los_Angeles')).isoformat()))
+
+    # Upload the files to the acquisition
     print('Uploading files...')
     for f in upload_files:
         print('\t%s...' % (f))
