@@ -59,7 +59,7 @@ if __name__ == "__main__":
     acquisitions = [ x for x in fw.get_session_acquisitions(session_id) if x.label == acquisition_label ]
 
     if acquisitions:
-        acquistion_id = acquisitions[0]['_id']
+        acquisition_id = acquisitions[0]['_id']
     else:
         acquisition_id = fw.add_acquisition(flywheel.Acquisition(session=session_id, label=acquisition_label, timestamp=datetime.datetime.utcnow().replace(tzinfo=pytz.timezone('America/Los_Angeles')).isoformat()))
 
