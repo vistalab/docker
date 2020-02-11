@@ -29,11 +29,14 @@ WORKDIR /pbrt/
 
 # Pull the git directory
 RUN apt-get install -y git
-RUN git clone --recursive https://github.com/scienstanford/pbrt-v3-spectral.git
+#RUN git clone --recursive https://github.com/scienstanford/pbrt-v3-spectral.git
+RUN git clone -b pbrt_550 --recursive https://github.com/Zhenyi-Liu/pbrt_singleSP.git
 
-WORKDIR /pbrt/pbrt-v3-spectral/build
+#WORKDIR /pbrt/pbrt-v3-spectral/build
+WORKDIR /pbrt/pbrt_singleSP/build
 #RUN cmake -G 'Unix Makefiles' ..
 RUN cmake -DCMAKE_BUILD_TYPE=Release ..
 RUN make
 
-ENV PATH $PATH:/pbrt/pbrt-v3-spectral/build
+#ENV PATH $PATH:/pbrt/pbrt-v3-spectral/build
+ENV PATH $PATH:/pbrt/pbrt_singleSP/build
